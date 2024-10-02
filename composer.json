@@ -1,27 +1,23 @@
 {
-    "name": "mikehaertl/php-pdftk",
+    "name": "escolarte/php-pdftk",
     "description": "A PDF conversion and form utility based on pdftk.",
     "keywords": ["pdf", "pdftk"],
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Michael Haertl",
-            "email": "haertl.mike@gmail.com"
-        },
-        {
-            "name": "Fabiano Mendes",
-            "email": "fabianomendesoficial@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=8.2"
-    },
-    "require-dev": {
-    },
     "autoload": {
         "psr-4": {
             "Escolarte\\PhpPdftk\\": "src/"
         }
+    },
+    "authors": [
+        {
+            "name": "Fabiano Mendes"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.2"
+    },
+    "require-dev": {
     }
 }
