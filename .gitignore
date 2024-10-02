@@ -1,5 +1,9 @@
+/vendor/
+/.fleet
+/.idea
+/.vscode
+/.DS_Store
 phpunit.xml
 composer.lock
-/vendor/
 *.swp
 .phpunit.result.cache
