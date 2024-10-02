@@ -6,7 +6,6 @@ namespace Escolarte\PhpPdftk;
 
 interface PdfInterface
 {
-	
 	public function __construct(string|null $pdf, array $options);
 	
 	public function __get(string $name): mixed;

@@ -6,17 +6,17 @@
 	
 	final class Pdf implements PdfInterface
 	{
-		protected $tempPath = "";
+		public string $tempPath = "";
+		private string $tpmFile = "";
 		private array $options = [
 			'command' => 'pdftk',
 			'output'  => 'output.pdf'
 		];
 		private string $command = "";
-		private string $tpmFile = "";
 		
 		public function __construct(
 			private string|null $pdf = null,
-			                    $options = array()
+			$options = array()
 		) {
 			$this->setOptions($options);
 			$this->tempPath = tempnam(sys_get_temp_dir(), 'pdf');
@@ -108,8 +108,8 @@
 		 */
 		public function execute(): bool
 		{
-			$this->tempPath = "{$this->tempPath}/{$this->output}";
-			$command        = " output {$this->tempPath}";
+			$this->tpmFile = "{$this->tempPath}/{$this->output}";
+			$command       = " output {$this->tempPath}";
 			
 			return $this->execCommand($command);
 		}
@@ -122,10 +122,7 @@
 		{
 			$command = " output {$output}";
 			
-			if ( $this->execCommand($command) )
-				return unlink($this->tempPath);
-			
-			return false;
+			return $this->execCommand($command);
 		}
 		
 		/**
