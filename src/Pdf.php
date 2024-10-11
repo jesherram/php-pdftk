@@ -8,6 +8,7 @@ final class Pdf implements PdfInterface
 {
     public string $tempPath = "";
     private string $tpmFile = "";
+    private array $errors = [];
     private array $options = [
         'command' => 'pdftk',
         'output'  => 'output.pdf'
@@ -50,7 +51,45 @@ final class Pdf implements PdfInterface
      */
     private function execCommand(string $command): bool
     {
-        return exec($command) === "";
+        exec($command, $output, $returnVar);
+
+        $success = count($output) === 0;
+
+        if (! $success ) $this->errors = $output;
+
+        return $success;
+    }
+
+    /**
+     * @return string
+     */
+    private function getTmpNamFdf(): string
+    {
+        if (! $this->tempPath)
+            $this->tempPath = sys_get_temp_dir();
+
+        return tempnam($this->tempPath, 'fdf');
+    }
+
+    /**
+     * @param string $output
+     * @return void
+     */
+    private function addCommandOutput(string $output): void
+    {
+        if (stripos($this->command, 'flatten') !== false) {
+            $this->command = str_ireplace('flatten', "{$output} flatten", $this->command);
+        } else {
+            $this->command .= " {$output}";
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 
     /**
@@ -86,9 +125,9 @@ final class Pdf implements PdfInterface
 
         $pdfData .= "] >> >>\nendobj\ntrailer\n<< /Root 1 0 R >>\n%%EOF";
 
-        file_put_contents($this->getTmpNam(), $pdfData);
+        file_put_contents($this->getTmpNamFdf(), $pdfData);
 
-        $this->command .= " fill_form {$this->getTmpNam()}";
+        $this->command .= " fill_form {$this->getTmpNamFdf()}";
 
         return $this;
     }
@@ -104,42 +143,15 @@ final class Pdf implements PdfInterface
     }
 
     /**
-     * @return string
-     */
-    private function getTmpNam(): string
-    {
-        if (! $this->tempPath)
-            $this->tempPath = sys_get_temp_dir();
-
-        if ($this->output)
-            return "{$this->tempPath}/{$this->output}";
-
-        return tempnam($this->tempPath, 'pdf');
-    }
-
-    /**
      * @return bool
      */
     public function execute(): bool
     {
-        $this->tpmFile  = $this->getTmpNam();
+        $this->tpmFile = tempnam($this->tempPath, 'pdf');
 
-        $this->addCommandOutput("output {$this->tempPath}");
+        $this->addCommandOutput("output {$this->tpmFile}");
 
         return $this->execCommand($this->command);
-    }
-
-    /**
-     * @param string $output
-     * @return void
-     */
-    private function addCommandOutput(string $output): void
-    {
-        if (stripos($this->command, 'flatten') !== false) {
-            $this->command = str_ireplace('flatten', "{$output} flatten", $this->command);
-        } else {
-            $this->command .= " {$output}";
-        }
     }
 
     /**
@@ -156,7 +168,6 @@ final class Pdf implements PdfInterface
 
             return true;
         }
-
 
         return false;
     }
