@@ -6,7 +6,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Escolarte\\PhpPdftk\\": "src/"
+            "Jesherram\\PhpPdftk\\": "src/"
         }
     },
     "authors": [

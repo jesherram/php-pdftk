@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 	
-namespace Escolarte\PhpPdftk;
+namespace Jesherram\PhpPdftk;
 
 interface PdfInterface
 {
