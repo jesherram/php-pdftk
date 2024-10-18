@@ -16,5 +16,5 @@ Fill out PDF form
 You should use [composer](https://getcomposer.org/) to install this library.
 
 ```
-composer require escolarte/php-pdftk
+composer require jesherram/php-pdftk
 ```
